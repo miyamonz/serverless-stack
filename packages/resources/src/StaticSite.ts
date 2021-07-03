@@ -24,6 +24,8 @@ import {
   buildErrorResponsesFor404ErrorPage,
   buildErrorResponsesForRedirectToIndex,
 } from "./BaseSite";
+import { Stack } from "./Stack";
+import { ISstConstruct, ISstConstructInfo } from "./Construct";
 
 export enum StaticSiteErrorOptions {
   REDIRECT_TO_INDEX_PAGE = "REDIRECT_TO_INDEX_PAGE",
@@ -65,7 +67,7 @@ export interface StaticSiteCdkDistributionProps
   readonly defaultBehavior?: cf.AddBehaviorOptions;
 }
 
-export class StaticSite extends cdk.Construct {
+export class StaticSite extends cdk.Construct implements ISstConstruct {
   public readonly s3Bucket: s3.Bucket;
   public readonly cfDistribution: cf.Distribution;
   public readonly hostedZone?: route53.IHostedZone;
@@ -148,6 +150,11 @@ export class StaticSite extends cdk.Construct {
     );
     this.createRoute53Records();
     this.createS3Deployment();
+
+    ///////////////////
+    // Register Construct
+    ///////////////////
+    root.registerConstruct(this);
   }
 
   public get url(): string {
@@ -181,6 +188,13 @@ export class StaticSite extends cdk.Construct {
 
   public get distributionDomain(): string {
     return this.cfDistribution.distributionDomainName;
+  }
+
+  public getConstructInfo(): ISstConstructInfo {
+    const cfn = this.cfDistribution.node.defaultChild as cf.CfnDistribution;
+    return {
+      distributionLogicalId: Stack.of(this).getLogicalId(cfn),
+    };
   }
 
   protected validateCustomDomainSettings() {
