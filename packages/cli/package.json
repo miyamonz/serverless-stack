@@ -55,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "aws-cdk": "1.114.0",
+    "aws-lambda-ric": "^1.1.0",
     "aws-sdk": "^2.761.0",
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
