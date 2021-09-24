@@ -101,7 +101,7 @@ module.exports = async function (argv, config, cliInfo) {
 
   logger.info("");
   logger.info("==========================");
-  logger.info(" Starting Live Lambda Dev");
+  logger.info(" Starting Live Lambda Dev Loser");
   logger.info("==========================");
   logger.info("");
 
@@ -1294,7 +1294,8 @@ async function onClientMessage(message) {
       runtime,
       function: {
         srcPath: getHandlerFullPosixPath(debugSrcPath, debugSrcHandler),
-        outPath: path.join(transpiledHandler.srcPath, transpiledHandler.entry),
+        outPath: "not_implemented",
+        transpiledHandler,
       },
       env: {
         ...getSystemEnv(),
